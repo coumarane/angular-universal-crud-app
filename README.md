@@ -25,3 +25,127 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+## Getting started with Angular Universal
+```
+$ ng add @nguniversal/express-engine
+```
+
+### Run Server-Side
+```
+$ npm run dev:ssr
+```
+
+### Configure ESLint and Prettier
+```
+$ npm install prettier eslint-plugin-prettier eslint-config-prettier --save-dev
+```
+
+create file .prettierrc.json and add :
+```
+{
+  "singleQuote": true,
+  "trailingComma": "none",
+  "endOfLine": "auto"
+}
+```
+
+Create file .eslintrc.json and add :
+
+```
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json",
+          "e2e/tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "eslint:recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "prefix": "app",
+            "style": "kebab-case",
+            "type": "element"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "prefix": "app",
+            "style": "camelCase",
+            "type": "attribute"
+          }
+        ],
+        "sort-imports": [
+          "error",
+          {
+            "ignoreCase": false,
+            "ignoreDeclarationSort": false,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+            "allowSeparatedGroups": false
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {}
+    }
+  ]
+}
+```
+
+Create .eslintignore and add :
+
+```
+package.json
+package-lock.json
+dist
+e2e/**
+karma.conf.js
+commitlint.config.js
+```
+
+Update package.json
+
+```
+"scripts": {
+    ...
+    "lint": "npx eslint 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --quiet --fix",
+    "format": "npx prettier 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --write",
+}
+```
+
+Configure Husky
+```
+$ npx mrm@2 lint-staged
+```
+
+Run formatter
+```
+$ npm run format && npm run lint
+```
